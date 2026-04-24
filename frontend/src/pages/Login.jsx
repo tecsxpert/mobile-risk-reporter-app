@@ -37,7 +37,7 @@ const Login = () => {
                     flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-8">
 
-        {/* Header */}
+        
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold text-gray-800">
              Risk Reporter
