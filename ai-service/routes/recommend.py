@@ -4,6 +4,7 @@ import os
 import json
 from dotenv import load_dotenv
 from groq import Groq
+from services.groq_service import call_groq
 
 load_dotenv()
 
@@ -32,7 +33,7 @@ def recommend_route():
             temperature=0.3
         )
 
-        ai_output = response.choices[0].message.content
+        ai_output = call_groq(prompt)
 
         # ✅ Parse JSON safely
         try:
