@@ -95,7 +95,7 @@ const RiskForm = ({ existing = null }) => {
           />
           {errors.title && (
             <p className="text-red-500 text-sm mt-1">
-              ⚠️ {errors.title}
+               {errors.title}
             </p>
           )}
         </div>
@@ -138,7 +138,7 @@ const RiskForm = ({ existing = null }) => {
           </div>
           {errors.severity && (
             <p className="text-red-500 text-sm mt-1">
-              ⚠️ {errors.severity}
+              {errors.severity}
             </p>
           )}
         </div>
@@ -174,7 +174,7 @@ const RiskForm = ({ existing = null }) => {
           />
           {errors.reportedBy && (
             <p className="text-red-500 text-sm mt-1">
-              ⚠️ {errors.reportedBy}
+              {errors.reportedBy}
             </p>
           )}
         </div>

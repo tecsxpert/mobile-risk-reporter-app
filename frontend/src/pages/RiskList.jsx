@@ -59,30 +59,40 @@ const RiskList = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-
-      {/* Navbar */}
-      <div className="bg-white shadow-sm px-6 py-4 
-                      flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-blue-600">
-          Risk Reporter
-        </h1>
-        <div className="flex gap-3">
-          <button
-            onClick={() => navigate('/create')}
-            className="bg-blue-600 text-white px-4 py-2 
-                       rounded-lg hover:bg-blue-700 font-medium"
-          >
-            + Report Risk
-          </button>
-          <button
-            onClick={logout}
-            className="bg-red-50 text-red-600 px-4 py-2 
-                       rounded-lg hover:bg-red-100 font-medium"
-          >
-            Logout
-          </button>
-        </div>
-      </div>
+      
+<div className="bg-white shadow-sm px-6 py-4
+                flex justify-between items-center">
+  <h1 
+    onClick={() => navigate('/dashboard')}
+    className="text-2xl font-bold text-blue-600 cursor-pointer"
+  >
+    Risk Reporter
+  </h1>
+  <div className="flex gap-3">
+    <button
+      onClick={() => navigate('/dashboard')}
+      className="bg-gray-50 text-gray-600 px-4 py-2
+                 rounded-lg hover:bg-gray-100 font-medium"
+    >
+      Dashboard
+    </button>
+   
+    <button
+      onClick={() => navigate('/create')}
+      className="bg-blue-600 text-white px-4 py-2
+                 rounded-lg hover:bg-blue-700 font-medium"
+    >
+      + Report Risk
+    </button>
+    <button
+      onClick={logout}
+      className="bg-red-50 text-red-600 px-4 py-2
+                 rounded-lg hover:bg-red-100 font-medium"
+    >
+      Logout
+    </button>
+  </div>
+</div>
 
       <div className="p-6">
 
