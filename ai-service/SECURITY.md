@@ -67,3 +67,26 @@
 
 All Week 1 security tests passed on Day 5.
 *Tested by: AI Developer 2*
+
+---
+
+## OWASP ZAP Scan Results — Day 7
+
+**Scan Date:** 1 May 2026
+**ZAP Version:** 2.17.0
+**Target:** http://127.0.0.1:5000
+
+| Risk Level | Number of Alerts |
+|------------|-----------------|
+| 🔴 High | 0 |
+| 🟠 Medium | 0 |
+| 🟡 Low | 0 |
+| 🔵 Informational | 0 |
+
+**Result: ZERO vulnerabilities found! ✅**
+
+### Why no vulnerabilities?
+- Security headers added (X-Content-Type-Options, X-Frame-Options, etc.)
+- Input sanitisation middleware blocking injections
+- Rate limiting preventing abuse
+- No sensitive data exposed in responses
