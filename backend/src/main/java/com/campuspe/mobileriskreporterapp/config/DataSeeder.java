@@ -1,6 +1,4 @@
-/* package com.campuspe.mobileriskreporterapp.config;
-
-
+package com.campuspe.mobileriskreporterapp.config;
 @Component
 public class DataSeeder implements CommandLineRunner {
 
@@ -10,7 +8,7 @@ public class DataSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        // Only seed if DB is empty
+       
         if(repository.count() > 0) return;
 
         List<RiskReport> reports = Arrays.asList(
@@ -76,7 +74,7 @@ public class DataSeeder implements CommandLineRunner {
         );
 
         repository.saveAll(reports);
-        System.out.println("✅ 15 demo records seeded!");
+        System.out.println(" 15 demo records seeded!");
     }
 
     private RiskReport createReport(
@@ -93,4 +91,4 @@ public class DataSeeder implements CommandLineRunner {
         r.setReportedBy(reportedBy);
         return r;
     }
-} */
+} 
