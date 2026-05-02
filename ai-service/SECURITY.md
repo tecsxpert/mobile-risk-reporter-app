@@ -140,3 +140,30 @@ ready for Demo Day with zero high/critical vulnerabilities.
 ---
 *Last updated: Day 12 — AI Developer 2*
 *Sprint: 14 April – 9 May 2026*
+
+---
+
+## Final Security Checklist — Day 13
+
+### AI Service Security Checklist
+- [x] API key stored in .env — never committed
+- [x] Input sanitisation on all endpoints
+- [x] Prompt injection detection active
+- [x] Rate limiting — 30 req/min per IP
+- [x] Security headers on all responses
+- [x] PII audit — no personal data in prompts
+- [x] OWASP ZAP scan — zero findings
+- [x] 8 pytest tests all passing
+- [x] E2E integration tests passing
+- [x] Error handling on all endpoints
+- [x] Retry logic on Groq API calls
+- [x] No secrets in source code
+
+### Sign-off Status
+| Member | Role | Status |
+|--------|------|--------|
+| AI Developer 2 | Security Testing | ✅ Signed off |
+
+---
+*Final security checklist completed: Day 13*
+*AI Developer 2 — Mobile Risk Reporter App*
