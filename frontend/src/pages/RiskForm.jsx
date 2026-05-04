@@ -121,7 +121,8 @@ const RiskForm = ({ existing = null }) => {
           <label className="block mb-1 font-semibold text-gray-700">
             Severity <span className="text-red-500">*</span>
           </label>
-          <div className="grid grid-cols-4 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          
             {['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'].map(level => (
               <button
                 key={level}
