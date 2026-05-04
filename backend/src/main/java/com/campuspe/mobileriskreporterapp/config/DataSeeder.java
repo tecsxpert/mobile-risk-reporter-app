@@ -1,4 +1,8 @@
 package com.campuspe.mobileriskreporterapp.config;
+
+import java.util.Arrays;
+import java.util.List;
+
 @Component
 public class DataSeeder implements CommandLineRunner {
 
