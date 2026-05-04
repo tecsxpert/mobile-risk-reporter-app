@@ -9,12 +9,42 @@ const RiskDetail = () => {
   const [report, setReport]   = useState(null)
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    API.get(`/risks/${id}`)
-      .then(res => setReport(res.data))
-      .catch(err => console.error(err))
-      .finally(() => setLoading(false))
-  }, [id])
+ useEffect(() => {
+
+  setLoading(true)
+
+  API.get(`/risks/${id}`)
+    .then(async (res) => {
+
+      const riskData = res.data
+
+      try {
+
+        const aiRes = await API.post('/ai/recommend', {
+          user_input: `
+            Title: ${riskData.title}
+            Description: ${riskData.description}
+            Severity: ${riskData.severity}
+          `
+        })
+
+        riskData.aiRecommendations =
+          aiRes.data.recommendations?.join(', ')
+
+        riskData.aiDescription =
+          `Priority: ${aiRes.data.priority}`
+
+      } catch(err) {
+        console.error('AI API Error', err)
+      }
+
+      setReport(riskData)
+
+    })
+    .catch(err => console.error(err))
+    .finally(() => setLoading(false))
+
+}, [id])
 
   const handleDelete = () => {
     if(window.confirm('Are you sure you want to delete this report?')) {
@@ -69,7 +99,7 @@ const RiskDetail = () => {
       <div className="bg-white shadow-sm px-6 py-4
                       flex justify-between items-center">
         <h1 className="text-2xl font-bold text-blue-600">
-          🚨 Risk Reporter
+          Risk Reporter
         </h1>
         <button
           onClick={() => navigate(-1)}
@@ -118,7 +148,7 @@ const RiskDetail = () => {
           
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-gray-500 text-sm">📍 Location</p>
+              <p className="text-gray-500 text-sm">Location</p>
               <p className="font-semibold text-gray-800 mt-1">
                 {report.location || 'Not specified'}
               </p>
