@@ -35,11 +35,11 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-gray-50 
                     flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-8">
+      <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-6 sm:p-8">
 
         
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-gray-800">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
              Risk Reporter
           </h1>
           <p className="text-gray-500 mt-2">
@@ -92,7 +92,7 @@ const Login = () => {
           onClick={handleSubmit}
           disabled={loading}
           className={`w-full p-3 rounded-lg font-bold text-white
-            text-lg transition
+            text-base sm:text-lg transition
             ${loading 
               ? 'bg-gray-400 cursor-not-allowed' 
               : 'bg-blue-600 hover:bg-blue-700'}`}
