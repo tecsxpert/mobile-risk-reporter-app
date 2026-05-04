@@ -108,14 +108,15 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-
+    <div className="bg-white shadow-sm px-4 py-4
+                flex flex-col md:flex-row
+                gap-4 md:gap-0
+                justify-between md:items-center">
       
-      <div className="bg-white shadow-sm px-6 py-4
-                      flex justify-between items-center">
         <h1 className="text-2xl font-bold text-blue-600">
           Risk Reporter
         </h1>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-2">
           <button
             onClick={() => navigate('/reports')}
             className="bg-gray-50 text-gray-600 px-4 py-2
@@ -123,6 +124,13 @@ const Dashboard = () => {
           >
             All Reports
           </button>
+          <button
+  onClick={() => navigate('/analytics')}
+  className="text-gray-600 px-4 py-2 rounded-lg
+             hover:bg-gray-100 font-medium"
+>
+  Analytics
+</button>
           <button
             onClick={() => navigate('/create')}
             className="bg-blue-600 text-white px-4 py-2
@@ -137,30 +145,32 @@ const Dashboard = () => {
           >
             Logout
           </button>
+          
         </div>
       </div>
-
-      <div className="p-6">
-
-        
-        <div className="grid grid-cols-4 gap-4 mb-6">
-          {kpiCards.map((card, index) => (
-            <div key={index}
-                 className={`bg-white rounded-xl border-2 p-5
-                             shadow-sm ${card.color}`}>
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-gray-500 text-sm font-medium">
-                    {card.title}
-                  </p>
-                  <p className={`text-4xl font-bold mt-1 ${card.textColor}`}>
-                    {card.value}
-                  </p>
-                </div>
-                <span className="text-3xl">{card.icon}</span>
-              </div>
-            </div>
-          ))}
+     
+      <div className="p-4 md:p-6">
+       {/* KPI Cards */}
+<div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+  {kpiCards.map((card, index) => (
+    <div key={index}
+         className={`bg-white rounded-xl border-2 p-4 md:p-5
+                     shadow-sm ${card.color}`}>
+      <div className="flex justify-between items-start">
+        <div>
+          <p className="text-gray-500 text-xs md:text-sm font-medium">
+            {card.title}
+          </p>
+          <p className={`text-3xl md:text-4xl font-bold mt-1 
+                         ${card.textColor}`}>
+            {card.value}
+          </p>
+        </div>
+        <span className="text-2xl md:text-3xl">{card.icon}</span>
+      </div>
+    </div>
+  ))}
+</div>
         </div>
 
        
@@ -168,7 +178,7 @@ const Dashboard = () => {
           <h2 className="text-lg font-bold text-gray-800 mb-4">
             Risks Reported This Week
           </h2>
-          <ResponsiveContainer width="100%" height={500}>
+          <ResponsiveContainer width="100%" height={300}>
             <BarChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0"/>
               <XAxis dataKey="day" />
@@ -193,7 +203,8 @@ const Dashboard = () => {
             </button>
           </div>
 
-          <table className="w-full">
+          <div className="overflow-x-auto">
+          <table className="w-full min-w-[700px]">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
                 <th className="p-3 text-left text-gray-600 font-semibold">Title</th>
@@ -210,7 +221,7 @@ const Dashboard = () => {
                   <td className="p-3 font-medium text-gray-800">
                     {report.title}
                   </td>
-                  <td className="p3">
+                  <td className="p-3">
                     <span className={`px-3 py-1 rounded-full text-white
                                       text-xs font-semibold
                                       ${severityColor(report.severity)}`}>
@@ -252,7 +263,8 @@ const Dashboard = () => {
               ))}
             </tbody>
           </table>
-        </div>
+          </div>
+        
 
       </div>
     </div>

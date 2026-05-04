@@ -77,8 +77,10 @@ const RiskList = () => {
     <div className="min-h-screen bg-gray-50">
 
       
-      <div className="bg-white shadow-sm px-6 py-4
-                      flex justify-between items-center">
+      <div className="bg-white shadow-sm px-4 md:px-6 py-4
+                flex flex-col md:flex-row
+                gap-3 md:gap-0
+                justify-between md:items-center">     
         <h1
           onClick={() => navigate('/dashboard')}
           className="text-2xl font-bold text-blue-600 cursor-pointer"
@@ -100,6 +102,7 @@ const RiskList = () => {
           >
             + Report Risk
           </button>
+           
           <button
             onClick={logout}
             className="bg-red-50 text-red-600 px-4 py-2
@@ -109,6 +112,7 @@ const RiskList = () => {
           </button>
         </div>
       </div>
+    
       
       <div className="p-6 max-w-7xl mx-auto">
 
@@ -120,8 +124,6 @@ const RiskList = () => {
       Manage and track all reported workplace risks
     </p>
   </div>
-
-  
   <SearchBar
     onSearch={(value) => {
       setPage(0)
@@ -138,7 +140,6 @@ const RiskList = () => {
     }}
   />
 
-  
         {loading && (
           <div className="flex justify-center items-center h-64">
             <div className="text-center">
@@ -154,7 +155,6 @@ const RiskList = () => {
         {!loading && empty && (
           <div className="bg-white rounded-2xl shadow-sm p-12
                           text-center">
-            <p className="text-6xl mb-4">📋</p>
             <p className="text-gray-700 text-xl font-bold mb-2">
               No reports found!
             </p>
@@ -180,8 +180,10 @@ const RiskList = () => {
                 Showing {reports.length} reports
               </p>
             </div>
+            <div className="overflow-x-auto">
+            <table className="w-full min-w-[900px]">
 
-            <table className="w-full">
+            
               <thead className="bg-gray-50">
                 <tr>
                   <th className="p-4 text-left text-gray-500
@@ -272,14 +274,14 @@ const RiskList = () => {
                 ))}
               </tbody>
             </table>
-
+            </div>
             
             <div className="flex justify-between items-center p-4
                             border-t border-gray-100">
               <p className="text-gray-400 text-sm">
                 Page {page + 1} of {totalPages}
               </p>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => setPage(p => p - 1)}
                   disabled={page === 0}
