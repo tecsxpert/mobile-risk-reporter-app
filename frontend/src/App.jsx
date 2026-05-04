@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import ProtectedRoute from './components/ProtectedRoute'
 import { AuthProvider } from './context/AuthContext'
+import Analytics from './pages/Analytics'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import RiskDetail from './pages/RiskDetail'
@@ -26,7 +27,11 @@ function App() {
               <RiskList />
             </ProtectedRoute>
           }/>
-
+          <Route path="/analytics" element={
+  <ProtectedRoute>
+    <Analytics />
+  </ProtectedRoute>
+}/>
           <Route path="/create" element={
             <ProtectedRoute>
               <RiskForm />
@@ -58,3 +63,4 @@ function App() {
 }
 
 export default App
+
