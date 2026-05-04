@@ -4,7 +4,7 @@ Analyze the given input and return ONLY a valid JSON response.
 
 Input: {user_input}
 
-Output format :
+Output format (STRICT):
 {
   "description": "Clear explanation of the risk",
   "severity": "Low | Medium | High",
@@ -17,7 +17,6 @@ Severity Guidelines:
 - Medium: Noticeable issue, moderate impact, needs attention
 - High: Critical issue, high impact, immediate action required
 
-
 Category Guidelines:
 - Safety: Physical hazards, injuries, accidents
 - Technical: System failures, bugs, cyber issues
@@ -25,8 +24,12 @@ Category Guidelines:
 - Financial: Budget, cost, financial loss
 
 Rules:
-- Return ONLY JSON (no extra text)
-- Ensure valid JSON format
+- Return ONLY valid JSON (no text before or after)
+- Do NOT include explanations, markdown, or code blocks
+- Ensure JSON is COMPLETE and not truncated
+- Do NOT cut words or sentences midway
+- All fields must be present
 - Use exactly the given field names
-- Severity must be one of: Low, Medium, High
+- Severity must be exactly: Low, Medium, or High
+- Output must be parseable by json.loads()
 - Keep output concise and professional
