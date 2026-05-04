@@ -1,14 +1,8 @@
 from flask import request, jsonify
 from datetime import datetime
-import os
 import json
-from dotenv import load_dotenv
-from groq import Groq
 from services.groq_service import call_groq
 
-load_dotenv()
-
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 def describe_route():
     data = request.get_json()
@@ -16,21 +10,11 @@ def describe_route():
     if not data or "text" not in data or not data["text"].strip():
         return jsonify({"error": "Invalid input. 'text' field required"}), 400
 
-    user_input = data["text"]
+    user_input = data["text"].strip()
 
     try:
         with open("prompts/describe.txt") as f:
             prompt = f.read().replace("{user_input}", user_input)
-
-        response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[
-                {"role": "user", 
-                 "content": prompt
-                }
-            ],
-            temperature=0.2
-        )
 
         ai_output = call_groq(prompt)
 
@@ -42,13 +26,21 @@ def describe_route():
                 "raw_output": ai_output
             }), 500
 
+        required_fields = ["description", "severity", "category", "impact"]
+
+        for field in required_fields:
+            if not parsed_output.get(field):
+                parsed_output[field] = "Not specified"
+
+        parsed_output["severity"] = parsed_output["severity"].capitalize()
+        parsed_output["category"] = parsed_output["category"].capitalize()
+
         parsed_output["generated_at"] = datetime.utcnow().isoformat()
 
         return jsonify(parsed_output)
 
     except Exception as e:
         print("ERROR:", str(e))
-
         return jsonify({
             "error": "AI processing failed",
             "details": str(e),

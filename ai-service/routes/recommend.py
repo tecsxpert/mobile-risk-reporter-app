@@ -1,41 +1,23 @@
 from flask import request, jsonify
 from datetime import datetime
-import os
 import json
-from dotenv import load_dotenv
-from groq import Groq
 from services.groq_service import call_groq
 
-load_dotenv()
-
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 def recommend_route():
     data = request.get_json()
 
-    # ✅ Validate input
     if not data or "text" not in data or not data["text"].strip():
         return jsonify({"error": "Valid 'text' field required"}), 400
 
-    user_input = data["text"]
+    user_input = data["text"].strip()
 
     try:
-        # ✅ Load prompt
         with open("prompts/recommend.txt") as f:
             prompt = f.read().replace("{user_input}", user_input)
 
-        # ✅ Call Groq
-        response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[
-                {"role": "user", "content": prompt}
-            ],
-            temperature=0.3
-        )
-
         ai_output = call_groq(prompt)
 
-        # ✅ Parse JSON safely
         try:
             parsed_output = json.loads(ai_output)
         except json.JSONDecodeError:
@@ -44,7 +26,15 @@ def recommend_route():
                 "raw_output": ai_output
             }), 500
 
-        # ✅ Add timestamp
+        if not parsed_output.get("recommendations"):
+            parsed_output["recommendations"] = []
+
+        if not parsed_output.get("priority"):
+            parsed_output["priority"] = "Not specified"
+
+        if isinstance(parsed_output["priority"], str):
+            parsed_output["priority"] = parsed_output["priority"].capitalize()
+
         parsed_output["generated_at"] = datetime.utcnow().isoformat()
 
         return jsonify(parsed_output)
