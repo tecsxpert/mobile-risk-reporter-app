@@ -94,21 +94,23 @@ const RiskDetail = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <div className="bg-white shadow-sm px-4 md:px-6 py-4
+                flex flex-col md:flex-row
+                justify-between items-start md:items-center gap-3">
 
-      {/* Navbar */}
-      <div className="bg-white shadow-sm px-6 py-4
-                      flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-blue-600">
-          Risk Reporter
-        </h1>
-        <button
-          onClick={() => navigate(-1)}
-          className="bg-gray-50 text-gray-600 px-4 py-2
-                     rounded-lg hover:bg-gray-100 font-medium"
-        >
-          ← Back
-        </button>
-      </div>
+  <h1 className="text-2xl font-bold text-blue-600">
+    Risk Reporter
+  </h1>
+
+  <button
+    onClick={() => navigate(-1)}
+    className="bg-gray-50 text-gray-600 px-4 py-2
+               rounded-lg hover:bg-gray-100 font-medium"
+  >
+    ← Back
+  </button>
+
+</div>
 
       <div className="p-6 max-w-3xl mx-auto">
         <div className="bg-white rounded-xl shadow-sm p-6 mb-4">
@@ -146,7 +148,7 @@ const RiskDetail = () => {
           </div>
 
           
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div className="bg-gray-50 rounded-lg p-4">
               <p className="text-gray-500 text-sm">Location</p>
               <p className="font-semibold text-gray-800 mt-1">
@@ -172,7 +174,7 @@ const RiskDetail = () => {
           </div>
 
           
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <button
               onClick={() => navigate(`/edit/${report.id}`)}
               className="bg-blue-600 text-white px-6 py-2
