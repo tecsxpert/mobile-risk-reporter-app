@@ -3,11 +3,11 @@ import ProtectedRoute from './components/ProtectedRoute'
 import { AuthProvider } from './context/AuthContext'
 import Analytics from './pages/Analytics'
 import Dashboard from './pages/Dashboard'
+import EditRisk from './pages/EditRisk'
 import Login from './pages/Login'
 import RiskDetail from './pages/RiskDetail'
 import RiskForm from './pages/RiskForm'
 import RiskList from './pages/RiskList'
-
 function App() {
   return (
     <AuthProvider>
@@ -38,11 +38,7 @@ function App() {
             </ProtectedRoute>
           }/>
 
-          <Route path="/edit/:id" element={
-            <ProtectedRoute>
-              <RiskForm />
-            </ProtectedRoute>
-          }/>
+         
 
           <Route path="/dashboard" element={
             <ProtectedRoute>
@@ -55,6 +51,13 @@ function App() {
               <RiskDetail />
             </ProtectedRoute>
           }/>
+          import EditRisk from './pages/EditRisk'   // ✅ ADD
+
+<Route path="/edit/:id" element={
+  <ProtectedRoute>
+    <EditRisk />   {/* ✅ instead of RiskForm */}
+  </ProtectedRoute>
+}/>
 
         </Routes>
       </BrowserRouter>

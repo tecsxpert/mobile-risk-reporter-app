@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
-import API from '../services/api'
 
 const Login = () => {
 
@@ -11,26 +11,26 @@ const Login = () => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const { login } = useContext(AuthContext)
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = () => {
-    if(!form.email || !form.password) {
-      setError('Email and password are required!')
-      return
-    }
-    setLoading(true)
-    API.post('/auth/login', form)
-      .then(res => {
-        login(res.data.token)
-      })
-      .catch(() => {
-        setError('Invalid email or password!')
-      })
-      .finally(() => setLoading(false))
+  if (!form.email || !form.password) {
+    setError('Email and password are required!')
+    return
   }
+
+  setLoading(true)
+
+  setTimeout(() => {
+    login("fake-token-123")   
+    navigate("/dashboard")    
+    setLoading(false)
+  }, 500)
+}
 
   return (
     <div className="min-h-screen bg-gray-50 

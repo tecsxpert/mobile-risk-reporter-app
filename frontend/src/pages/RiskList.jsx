@@ -170,16 +170,26 @@ const RiskList = () => {
             </button>
           </div>
         )}
+{!loading && !empty && (
+  <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+
+    {/* HEADER */}
+    <div className="p-4 border-b border-gray-100 flex justify-between items-center">
+      <p className="text-gray-500 text-sm">
+        Showing {reports.length} reports
+      </p>
+
+      <button
+        onClick={() => window.open("http://localhost:8080/export")}
+        className="bg-green-600 text-white px-4 py-2
+                   rounded-lg hover:bg-green-700 text-sm font-medium"
+      >
+        Export CSV
+      </button>
+    </div>
 
         
-        {!loading && !empty && (
-          <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-            <div className="p-4 border-b border-gray-100
-                            flex justify-between items-center">
-              <p className="text-gray-500 text-sm">
-                Showing {reports.length} reports
-              </p>
-            </div>
+       
             <div className="overflow-x-auto">
             <table className="w-full min-w-[900px]">
 
@@ -237,8 +247,9 @@ const RiskList = () => {
                       {report.reportedBy}
                     </td>
                     <td className="p-4 text-gray-400 text-sm">
-                      {new Date(report.createdAt)
-                        .toLocaleDateString()}
+                      {report.createdAt
+  ? new Date(report.createdAt).toLocaleDateString()
+  : '-'}
                     </td>
                     <td className="p-4">
                       <div className="flex gap-2">

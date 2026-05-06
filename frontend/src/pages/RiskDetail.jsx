@@ -172,6 +172,22 @@ const RiskDetail = () => {
               {report.description || 'No description provided'}
             </p>
           </div>
+          {report.fileName && (
+  <div className="bg-gray-50 rounded-lg p-4 mb-4">
+    <p className="text-gray-500 text-sm mb-1">
+      Attached File
+    </p>
+
+    <a
+      href={`http://localhost:8080/uploads/${report.fileName}`}
+      target="_blank"
+      rel="noreferrer"
+      className="text-blue-600 font-semibold underline"
+    >
+      View / Download File
+    </a>
+  </div>
+)}
 
           
           <div className="flex flex-col sm:flex-row gap-3">

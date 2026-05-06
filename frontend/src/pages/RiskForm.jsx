@@ -1,19 +1,39 @@
-import { useState } from 'react'
-import API from '../services/api'
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import API from '../services/api';
 
 const RiskForm = ({ existing = null }) => {
+
+  const navigate = useNavigate()
 
   const [form, setForm] = useState({
     title:       existing?.title       || '',
     description: existing?.description || '',
     severity:    existing?.severity    || 'LOW',
     location:    existing?.location    || '',
-    reportedBy:  existing?.reportedBy  || ''
+    reportedBy:  existing?.reportedBy  || '',
+    file: null   
+
   })
 
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+
+  
+  useEffect(() => {
+    if (existing) {
+      setForm({
+        title: existing.title || '',
+        description: existing.description || '',
+        severity: existing.severity || 'LOW',
+        location: existing.location || '',
+        reportedBy: existing.reportedBy || '',
+        file: null  
+      })
+    }
+  }, [existing])
+  
 
   const validate = () => {
     const err = {}
@@ -28,25 +48,55 @@ const RiskForm = ({ existing = null }) => {
     setErrors({ ...errors, [e.target.name]: '' })
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault()
+
     const err = validate()
-    if(Object.keys(err).length > 0) {
+    if (Object.keys(err).length > 0) {
       setErrors(err)
       return
     }
+
     setLoading(true)
-    if(existing) {
-      API.put(`/risks/${existing.id}`, form)
-        .then(() => setSuccess(true))
-        .catch(err => console.error(err))
-        .finally(() => setLoading(false))
-    } else {
-      API.post('/risks', form)
-        .then(() => setSuccess(true))
-        .catch(err => console.error(err))
-        .finally(() => setLoading(false))
+
+    try {
+      let fileName = null
+
+      
+      if (form.file) {
+        const data = new FormData()
+        data.append("file", form.file)
+
+        const uploadRes = await API.post('/api/upload', data)
+        fileName = uploadRes.data.filename
+      }
+
+      
+      const payload = {
+        title: form.title,
+        description: form.description,
+        severity: form.severity,
+        location: form.location,
+        reportedBy: form.reportedBy,
+        fileName: fileName || existing?.fileName || null
+      }
+
+      if (existing) {
+        await API.put(`/risks/${existing.id}`, payload)
+      } else {
+        await API.post('/risks', payload)
+      }
+
+      setSuccess(true)
+      setTimeout(() => navigate('/dashboard'), 800)
+
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setLoading(false)
     }
   }
+
 
   const severityColors = {
     LOW:      'bg-green-100 text-green-700 border-green-300',
@@ -59,7 +109,6 @@ const RiskForm = ({ existing = null }) => {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-lg w-full max-w-lg p-8">
 
-        
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-800">
             {existing ? 'Edit Report' : 'Report a Risk'}
@@ -71,7 +120,6 @@ const RiskForm = ({ existing = null }) => {
           </p>
         </div>
 
-        
         {success && (
           <div className="mb-4 p-4 bg-green-50 border border-green-200 
                           rounded-lg text-green-700 font-medium">
@@ -79,7 +127,6 @@ const RiskForm = ({ existing = null }) => {
           </div>
         )}
 
-        
         <div className="mb-5">
           <label className="block mb-1 font-semibold text-gray-700">
             Title <span className="text-red-500">*</span>
@@ -100,7 +147,6 @@ const RiskForm = ({ existing = null }) => {
           )}
         </div>
 
-        
         <div className="mb-5">
           <label className="block mb-1 font-semibold text-gray-700">
             Description
@@ -116,15 +162,14 @@ const RiskForm = ({ existing = null }) => {
           />
         </div>
 
-        
         <div className="mb-5">
           <label className="block mb-1 font-semibold text-gray-700">
             Severity <span className="text-red-500">*</span>
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          
             {['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'].map(level => (
               <button
+                type="button"
                 key={level}
                 onClick={() => setForm({...form, severity: level})}
                 className={`p-2 rounded-lg border-2 font-semibold text-sm
@@ -144,7 +189,6 @@ const RiskForm = ({ existing = null }) => {
           )}
         </div>
 
-        
         <div className="mb-5">
           <label className="block mb-1 font-semibold text-gray-700">
             Location
@@ -159,7 +203,6 @@ const RiskForm = ({ existing = null }) => {
           />
         </div>
 
-        
         <div className="mb-6">
           <label className="block mb-1 font-semibold text-gray-700">
             Reported By <span className="text-red-500">*</span>
@@ -179,8 +222,21 @@ const RiskForm = ({ existing = null }) => {
             </p>
           )}
         </div>
+        <div className="mb-6">
+  <label className="block mb-1 font-semibold text-gray-700">
+    Upload File (PDF/Image)
+  </label>
 
-        
+  <input
+    type="file"
+    accept=".pdf,.png,.jpg,.jpeg,.docx"
+    onChange={(e) =>
+      setForm({ ...form, file: e.target.files[0] })
+    }
+    className="w-full border-2 border-gray-200 p-2 rounded-lg"
+  />
+</div>
+
         <button
           onClick={handleSubmit}
           disabled={loading}
