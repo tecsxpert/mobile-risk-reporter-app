@@ -27,23 +27,20 @@ const Dashboard = () => {
   const navigate = useNavigate()
 
  useEffect(() => {
+  setLoading(true)
 
- 
-  API.get('/risks/stats')
-    .then(res => setStats(res.data))
+  Promise.all([
+    API.get('/risks/stats'),
+    API.get('/risks/weekly'),
+    API.get('/risks')
+  ])
+    .then(([statsRes, weeklyRes, allRes]) => {
+      setStats(statsRes.data)
+      setChartData(weeklyRes.data)
+      setRecentReports(allRes.data.slice(0,5))
+    })
     .catch(err => console.error(err))
-
-  
-  API.get('/risks/weekly')
-    .then(res => setChartData(res.data))
-    .catch(() => setChartData([])) 
-
-  
-  API.get('/risks')
-    .then(res => setRecentReports(res.data.slice(0,5)))
-    .catch(() => setRecentReports([])) 
-
-  setLoading(false)
+    .finally(() => setLoading(false))
 
 }, [])
 
@@ -150,7 +147,7 @@ const Dashboard = () => {
       </div>
      
       <div className="p-4 md:p-6">
-       {/* KPI Cards */}
+       
 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
   {kpiCards.map((card, index) => (
     <div key={index}
