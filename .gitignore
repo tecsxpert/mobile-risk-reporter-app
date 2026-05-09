@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# Java
+target/
+
+# Python
+venv/
+__pycache__/
+
+# Node
+node_modules/
+dist/
+
+.env/
