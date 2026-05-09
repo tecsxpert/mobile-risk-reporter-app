@@ -4,6 +4,7 @@ import time
 from services.groq_service import call_groq
 from services.cache_service import get_cache, set_cache
 from services.metrics import record_request
+from services.model_loader import model
 
 def clean_ai_output(output):
     output = output.strip()
