@@ -45,6 +45,7 @@ def generate_report_route():
             return jsonify({
                 **clean_cached,
                 "cached": True,
+                "is_fallback": False,
                 "response_time": round(duration, 3)
             })
 
@@ -52,6 +53,21 @@ def generate_report_route():
             prompt = f.read().replace("{user_input}", raw_input)
 
         ai_output = call_groq(prompt)
+
+        if ai_output is None:
+            duration = time.time() - start_time
+            record_request(duration)
+
+            return jsonify({
+                "title": "Risk Report",
+                "summary": "Unable to generate AI response.",
+                "overview": "Temporary issue occurred while processing.",
+                "key_items": [],
+                "recommendations": [],
+                "cached": False,
+                "is_fallback": True,
+                "response_time": round(duration, 3)
+            }), 200
 
         cleaned_output = clean_ai_output(ai_output)
 
@@ -62,10 +78,15 @@ def generate_report_route():
             record_request(duration)
 
             return jsonify({
-                "error": "Invalid AI response",
-                "raw_output": ai_output,
+                "title": "Risk Report",
+                "summary": "AI returned invalid response.",
+                "overview": "System handled the issue safely.",
+                "key_items": [],
+                "recommendations": [],
+                "cached": False,
+                "is_fallback": True,
                 "response_time": round(duration, 3)
-            }), 500
+            }), 200
 
         required_fields = ["title", "summary", "overview", "key_items", "recommendations"]
 
@@ -83,6 +104,7 @@ def generate_report_route():
 
         parsed_output["cached"] = False
         parsed_output["response_time"] = round(duration, 3)
+        parsed_output["is_fallback"] = False
 
         return jsonify(parsed_output)
 
@@ -91,7 +113,12 @@ def generate_report_route():
         record_request(duration)
 
         return jsonify({
-            "error": "Processing failed",
-            "details": str(e),
+            "title": "Risk Report",
+            "summary": "An error occurred while generating the report.",
+            "overview": "System handled the issue safely.",
+            "key_items": [],
+            "recommendations": [],
+            "cached": False,
+            "is_fallback": True,
             "response_time": round(duration, 3)
-        }), 500
+        }), 200
